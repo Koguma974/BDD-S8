@@ -1,0 +1,48 @@
+1 / mariadb -u root -p 
+                                             ⌂via 🆂 v2.13.16-20250225-154437-5a7c832 󰂄92%  15:11
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 4
+Server version: 12.2.2-MariaDB Arch Linux
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> 
+
+2 / create database TP_SecuBDD_Tayllamin_Justine;
+Query OK, 1 row affected (0,001 sec)
+
+3 / show database;
++------------------------------+
+| Database                     |
++------------------------------+
+| BK4                          |
+| TP_SecuBDD_Tayllamin_Justine |
+| agilequizz                   |
+| customer                     |
+| information_schema           |
+| jakarataee                   |
+| mysql                        |
+| performance_schema           |
+| sys                          |
++------------------------------+
+9 rows in set (0,001 sec)
+
+4 / create user bdds8@bdds8 identified by 'ensibs';
+Query OK, 0 rows affected (0,008 sec)
+
+grant all privileges on TP_SecuBDD_Tayllamin_Justine.* to bdds8@bdds8;
+Query OK, 0 rows affected (0,004 sec)
+
+flush privileges;
+Query OK, 0 rows affected (0,002 sec)
+
+5 / grant all privileges on *.* to bdds8@bdds8;
+
+grant all privileges on *.* to bdds8@bdds8;
+Query OK, 0 rows affected (0,003 sec)
+
+MariaDB [(none)]> flush privileges;
+Query OK, 0 rows affected (0,001 sec)
