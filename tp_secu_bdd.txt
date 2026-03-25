@@ -1,0 +1,166 @@
+1 / connectez vous à votre gestionnaire de base de données mysql ou mariadb
+2 / créer la base TP_SecuBDD_NomBinome1_NomBinome2
+3 / lister les bases présentes
+4 / créer un utilisateur de votre nom qui peut se connecter seulement à la base créée précédemment depuis localhost avec tous les privilèges
+5 / donner tous les droits à cet utilisateur sur tous les objets de toutes les bases
+6 / afficher les privilèges de l'utilisateur connecté
+7 / afficher tous les utilisateurs du système selon le modèle suivant
++-----------+------------------+-------------------------------------------+
+| host      | user             | password                                  |
++-----------+------------------+-------------------------------------------+
+| localhost | root             | *E74858DB86EBA20BC33D0AECAE8A8108C56B17FA |
+| zbook     | root             | *E74858DB86EBA20BC33D0AECAE8A8108C56B17FA |
+| 127.0.0.1 | root             | *E74858DB86EBA20BC33D0AECAE8A8108C56B17FA |
+| ::1       | root             | *E74858DB86EBA20BC33D0AECAE8A8108C56B17FA |
+| localhost | debian-sys-maint | *EEC1B0AA64F578D7FD4218C388C8A8C271D0E402 |
+| localhost | phpmyadmin       | *E74858DB86EBA20BC33D0AECAE8A8108C56B17FA |
++-----------+------------------+-------------------------------------------+
+6 rows in set (0.00 sec)
+
+8 / afficher la structure de la table des utilisateurs dans mySQL
+9 / afficher la liste des tables dans le format suivant
++---------------------------+
+| Tables_in_mysql           |
++---------------------------+
+| columns_priv              |
+| db                        |
+| event                     |
+| func                      |
+| general_log               |
+| help_category             |
+| help_keyword              |
+| help_relation             |
+| help_topic                |
+| host                      |
+| ndb_binlog_index          |
+| plugin                    |
+| proc                      |
+| procs_priv                |
+| proxies_priv              |
+| servers                   |
+| slow_log                  |
+| tables_priv               |
+| time_zone                 |
+| time_zone_leap_second     |
+| time_zone_name            |
+| time_zone_transition      |
+| time_zone_transition_type |
+| user                      |
++---------------------------+
+24 rows in set (0.00 sec)
+
+10 / afficher la version et l'heure du SGBDR
+11 / créer la table des fournisseurs dans le modèle suivant
+CREATE TABLE fournisseurs ( code INT, nom CHAR ) ;
+ALTER TABLE fournisseurs ADD prenom CHAR, ADD ref INT;
+DROP TABLE fournisseurs ;
+
+12 / afficher le résutat de sin(PI/4) et de (4+1)*6 sur une même ligne
+13 / créer la table shop et y insérer les donnés suivantes :
+
+CREATE TABLE shop (
+article INT(4) UNSIGNED ZEROFILL DEFAULT '0000' NOT NULL,
+dealer CHAR(20) DEFAULT '' NOT NULL,
+price DOUBLE(16,2) DEFAULT '0.00' NOT NULL,
+PRIMARY KEY(article, dealer));
+
+INSERT INTO shop VALUES
+(1,'A',3.45),(1,'B',3.99),(2,'A',10.99),(3,'B',1.45),(3,'C',1.69),
+(3,'D',1.25),(4,'D',19.95);
+
+14 / Quel est le résultat de la commande suivante : select arTIcle from SHoP;
+15 / créer un utilisateur "customer" qui n'a que les droits de lecture sur la table shop. Quel est les message d'errreur d'une tentative d'insertion par cet utilisateur ?
+
+16 / résultat des commandes suivantes :
+
+SELECT MAX(article) AS article FROM shop;
+SELECT article, dealer, price FROM shop WHERE price=(SELECT MAX(price) FROM shop);
+SELECT article, MAX(price) AS price FROM shop GROUP BY article;
+SELECT article, dealer, price FROM shop s1 WHERE price=(SELECT MAX(s2.price) FROM shop s2 WHERE s1.article = s2.article);
+
+17 / créer les objets suivants et noter le code retour:
+
+CREATE TABLE persons (
+ id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+ name CHAR(60) NOT NULL,
+ PRIMARY KEY (id)
+ );
+
+CREATE TABLE shirts (
+ id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+ style ENUM('t-shirt', 'polo', 'dress') NOT NULL,
+ color ENUM('red', 'blue', 'orange', 'white', 'black') NOT NULL,
+ owner SMALLINT UNSIGNED NOT NULL REFERENCES persons,
+ PRIMARY KEY (id)
+);
+
+INSERT INTO persons VALUES (NULL, 'Antonio Paz');
+
+INSERT INTO shirts VALUES
+ (NULL, 'polo', 'blue', LAST_INSERT_ID()),
+ (NULL, 'dress', 'white', LAST_INSERT_ID()),
+ (NULL, 't-shirt', 'blue', LAST_INSERT_ID());
+
+
+INSERT INTO persons VALUES (NULL, 'Lilliana Angelovska');
+INSERT INTO persons VALUES (1, 'Laurent Marot');
+
+INSERT INTO shirts VALUES
+ (NULL, 'dress', 'orange', LAST_INSERT_ID()),
+ (NULL, 'polo', 'red', LAST_INSERT_ID()),
+ (NULL, 'dress', 'blue', LAST_INSERT_ID()),
+ (NULL, 't-shirt', 'white', LAST_INSERT_ID());
+
+SELECT s.* FROM persons p, shirts s
+WHERE p.name LIKE 'Lilliana%'
+AND s.owner = p.id
+AND s.color <> 'white';
+
+CREATE TABLE animaux (nom VARCHAR(20), proprietaire VARCHAR(20), espece VARCHAR(20), genre CHAR(1), naissance DATE, mort DATE);
+
+18 / Créez un script python "question18.py" (vous avez droit à mysql.connector en librairie non standard) pour insérer le listing suivant :
+
+Fluffy	Harold	chat	f	'2013-02-04'	\N
+Claws	Gwen 	chat 	m	'2014-03-17'	\N
+Buffy	Harod	chien	f	'2019-05-13'	\N
+Fang	Benny	chien	m	'2010-08-27'	\N
+Bowser	Diane	chien	m	'2018-08-31'	'2021-07-29'
+Chirpy	Gwen	oiseau	f	'2018-09-11'	\N
+Whistler	Gwen	oiseau	\N	'2017-12-09'	\N
+Slim	Benny	serpent	m	'2016-04-29'	\N
+Puffball	Diane	hamster	f	'2019-03-30'	\N
+
+19 / Affichez l'âge des animaux
+20 / Expliquez le résultat de cette commande : SELECT 1 IS NULL, 1 IS NOT NULL;
+21 / Affichez le nom des animaux dont le nom contient un b ou un P avec une expression régulière
+22 / Modifiez le mot de passe de votre utilisateur créé au début avec la valeur "mysql"
+23 / Donnez une requête sur la table animaux affichant les tuples en version hachées (SHA2)
+24 / Il existe un script fourni avec MySQL et MariaDB permettant de sécuriser une installation fraîche du serveur de base de données, quel est-il et que fait-il ?
+25 / Comment feriez-vous pour chiffrer une cellule sensible d'une de vos tables de base de données ?
+26 / Faites un dump de votre base de test dans un fichier "dump.sql"
+
+27 / On souhaite stocker des informations en base concernant des employés d'une entreprise, entre autre leur Identifiant unique, et leur Salaire. Mais leur salaire doit rester secret et seule une personne autorisée doit pouvoir accéder à cette information, qui doit être protégée contre un attaquant disposant des droits en lecture sur la machine serveur hébergeant la base.
+La contrainte est cependant qu'il doit rester possible pour une personne autorisée de comparer les salaires de deux employés, et d'obtenir la somme des salaires ; et ce, sans compromettre le secret (le salaire ne doit pas transiter en clair).
+
+Définissez une base pour cela. Trouvez et utilisez des primitives de chiffrement homomorphe (ne les implémentez pas vous-même) permettant de comparer des entiers chiffrés, et d'additionner des entiers chiffrés.
+Indice pour le premier cas : il s'agit de trouver un algorithme préservant la relation d'ordre — aka. Order Revealing Encryption — (afin que les requêtes sur intervalles soient permises).
+
+Donnez l'implémentation en python du middleware et d'une application cliente de cette base illustrant le chiffrement, la récupération, et le déchiffrement des informations de la base.
+Votre projet doit présenter entre autre deux scripts client.py et server.py
+
+Le script server.py affiche à son lancement l'ip et le port par lesquels on peut le joindre. Il communique avec le SGBD et est considéré comme faisant partie du périmètre accessible par l'attaquant.
+Il permet d'exécuter :
+- la comparaison de deux employés sur leur salaire chiffré
+- la somme chiffrée des salaires
+Il est essentiel d'utiliser les ressources du serveur pour exécuter ces opérations, il est interdit par exemple de retourner la liste des salaires chiffrés au client pour qu'ensuite les salaires soient déchiffrés côté client afin d'en produire la somme.
+
+Le script client.py est hors périmètre de l'attaquant. Lancé avec en paramètres l'ip et le port du serveur, il propose un menu permettant :
+- d'ajouter un enregistrement à la base
+- d'afficher le contenu de la base
+- de comparer deux employés sur leur salaire
+- d'obtenir la somme des salaires
+
+Toute la partie chiffrement/déchiffrement doit être transparente pour l'utilisateur, à aucun moment on ne lui demande de comprendre le chiffrement en question ou de gérer des clés (similaire au fait que vous n'avez pas besoin de comprendre HTTPS pour afficher une page web).
+
+28 / Implémentez une attaque statistique permettant à un utilisateur illégitime d'approximer l'information chiffrée. Expliquez votre méthodologie pour créer un jeu de données dont la répartition est publique, puis pour retrouver avec approximation les informations de ce jeu de données à partir de ce modèle de répartition et de la suite ordonnée et chiffrée de ces informations.
+Lien utile : https://blog.cryptographyengineering.com/2019/02/11/attack-of-the-week-searchable-encryption-and-the-ever-expanding-leakage-function/
