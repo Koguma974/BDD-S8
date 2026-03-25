@@ -30,19 +30,169 @@ Query OK, 1 row affected (0,001 sec)
 +------------------------------+
 9 rows in set (0,001 sec)
 
-4 / create user bdds8@bdds8 identified by 'ensibs';
+4 / create user bdds8@localhost;
 Query OK, 0 rows affected (0,008 sec)
 
-grant all privileges on TP_SecuBDD_Tayllamin_Justine.* to bdds8@bdds8;
+grant all privileges on TP_SecuBDD_Tayllamin_Justine.* to bdds8@localhost;
 Query OK, 0 rows affected (0,004 sec)
 
 flush privileges;
 Query OK, 0 rows affected (0,002 sec)
 
-5 / grant all privileges on *.* to bdds8@bdds8;
+5 / grant all privileges on *.* to bdds8@localhost;
 
-grant all privileges on *.* to bdds8@bdds8;
+grant all privileges on *.* to bdds8@localhost;
 Query OK, 0 rows affected (0,003 sec)
 
 MariaDB [(none)]> flush privileges;
 Query OK, 0 rows affected (0,001 sec)
+
+6 / show grants for bdds8@bdds8;
++-------------------------------------------------------------------------------------------------------------------+
+| Grants for bdds8@bdds8                                                                                            |
++-------------------------------------------------------------------------------------------------------------------+
+| GRANT ALL PRIVILEGES ON *.* TO `bdds8`@`localhost` |
+| GRANT ALL PRIVILEGES ON `TP_SecuBDD_Tayllamin_Justine`.* TO `bdds8`@`localhost`                                       |
++-------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0,001 sec)
+
+7 / SELECT Host, User, Password FROM mysql.user;
++-----------+-------------+-------------------------------------------+
+| Host      | User        | Password                                  |
++-----------+-------------+-------------------------------------------+
+| localhost | mariadb.sys |                                           |
+| localhost | root        | *76B546A41F9D28D809BE841279C8928AB176459F |
+| localhost | mysql       | invalid                                   |
+|           | PUBLIC      |                                           |
+| localhost | bankuser    | *3245637073212565EA09575ACB95362E6CE3AB29 |
+| localhost | bdds8       |                                           |
++-----------+-------------+-------------------------------------------+
+6 rows in set (0,003 sec)
+
+8 / describe mysql.user;
++------------------------+---------------------+------+-----+----------+-------+
+| Field                  | Type                | Null | Key | Default  | Extra |
++------------------------+---------------------+------+-----+----------+-------+
+| Host                   | char(255)           | NO   |     |          |       |
+| User                   | char(128)           | NO   |     |          |       |
+| Password               | longtext            | YES  |     | NULL     |       |
+| Select_priv            | varchar(1)          | YES  |     | NULL     |       |
+| Insert_priv            | varchar(1)          | YES  |     | NULL     |       |
+| Update_priv            | varchar(1)          | YES  |     | NULL     |       |
+| Delete_priv            | varchar(1)          | YES  |     | NULL     |       |
+| Create_priv            | varchar(1)          | YES  |     | NULL     |       |
+| Drop_priv              | varchar(1)          | YES  |     | NULL     |       |
+| Reload_priv            | varchar(1)          | YES  |     | NULL     |       |
+| Shutdown_priv          | varchar(1)          | YES  |     | NULL     |       |
+| Process_priv           | varchar(1)          | YES  |     | NULL     |       |
+| File_priv              | varchar(1)          | YES  |     | NULL     |       |
+| Grant_priv             | varchar(1)          | YES  |     | NULL     |       |
+| References_priv        | varchar(1)          | YES  |     | NULL     |       |
+| Index_priv             | varchar(1)          | YES  |     | NULL     |       |
+| Alter_priv             | varchar(1)          | YES  |     | NULL     |       |
+| Show_db_priv           | varchar(1)          | YES  |     | NULL     |       |
+| Super_priv             | varchar(1)          | YES  |     | NULL     |       |
+| Create_tmp_table_priv  | varchar(1)          | YES  |     | NULL     |       |
+| Lock_tables_priv       | varchar(1)          | YES  |     | NULL     |       |
+| Execute_priv           | varchar(1)          | YES  |     | NULL     |       |
+| Repl_slave_priv        | varchar(1)          | YES  |     | NULL     |       |
+| Repl_client_priv       | varchar(1)          | YES  |     | NULL     |       |
+| Create_view_priv       | varchar(1)          | YES  |     | NULL     |       |
+| Show_view_priv         | varchar(1)          | YES  |     | NULL     |       |
+| Create_routine_priv    | varchar(1)          | YES  |     | NULL     |       |
+| Alter_routine_priv     | varchar(1)          | YES  |     | NULL     |       |
+| Create_user_priv       | varchar(1)          | YES  |     | NULL     |       |
+| Event_priv             | varchar(1)          | YES  |     | NULL     |       |
+| Trigger_priv           | varchar(1)          | YES  |     | NULL     |       |
+| Create_tablespace_priv | varchar(1)          | YES  |     | NULL     |       |
+| Delete_history_priv    | varchar(1)          | YES  |     | NULL     |       |
+| ssl_type               | varchar(9)          | YES  |     | NULL     |       |
+| ssl_cipher             | longtext            | NO   |     |          |       |
+| x509_issuer            | longtext            | NO   |     |          |       |
+| x509_subject           | longtext            | NO   |     |          |       |
+| max_questions          | bigint(20) unsigned | NO   |     | 0        |       |
+| max_updates            | bigint(20) unsigned | NO   |     | 0        |       |
+| max_connections        | bigint(20) unsigned | NO   |     | 0        |       |
+| max_user_connections   | bigint(21)          | NO   |     | 0        |       |
+| plugin                 | longtext            | NO   |     |          |       |
+| authentication_string  | longtext            | NO   |     |          |       |
+| password_expired       | varchar(1)          | NO   |     |          |       |
+| is_role                | varchar(1)          | YES  |     | NULL     |       |
+| default_role           | longtext            | NO   |     |          |       |
+| max_statement_time     | decimal(12,6)       | NO   |     | 0.000000 |       |
++------------------------+---------------------+------+-----+----------+-------+
+47 rows in set (0,001 sec)
+
+9 / use mysql;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+show tables;
++---------------------------+
+| Tables_in_mysql           |
++---------------------------+
+| column_stats              |
+| columns_priv              |
+| db                        |
+| event                     |
+| func                      |
+| general_log               |
+| global_priv               |
+| gtid_slave_pos            |
+| help_category             |
+| help_keyword              |
+| help_relation             |
+| help_topic                |
+| index_stats               |
+| innodb_index_stats        |
+| innodb_table_stats        |
+| plugin                    |
+| proc                      |
+| procs_priv                |
+| proxies_priv              |
+| roles_mapping             |
+| servers                   |
+| slow_log                  |
+| table_stats               |
+| tables_priv               |
+| time_zone                 |
+| time_zone_leap_second     |
+| time_zone_name            |
+| time_zone_transition      |
+| time_zone_transition_type |
+| transaction_registry      |
+| user                      |
++---------------------------+
+31 rows in set (0,002 sec)
+
+10 / SELECT VERSION(), NOW();
++----------------+---------------------+
+| VERSION()      | NOW()               |
++----------------+---------------------+
+| 12.2.2-MariaDB | 2026-03-25 16:08:57 |
++----------------+---------------------+
+1 row in set (0,001 sec)
+
+11 / CREATE TABLE fournisseurs ( code INT, nom CHAR ) ;ALTER TABLE fournisseurs ADD prenom CHAR, ADD ref INT;DROP TABLE fournisseurs ;
+Query OK, 0 rows affected (0,011 sec)
+
+Query OK, 0 rows affected (0,016 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0,009 sec)
+
+12 / SELECT SIN(PI()/4), (4+1)*6;
++--------------------+---------+
+| SIN(PI()/4)        | (4+1)*6 |
++--------------------+---------+
+| 0.7071067811865475 |      30 |
++--------------------+---------+
+1 row in set (0,001 sec)
+
+13 / CREATE TABLE shop (article INT(4) UNSIGNED ZEROFILL DEFAULT '0000' NOT NULL,dealer CHAR(20) DEFAULT '' NOT NULL,price DOUBLE(16,2) DEFAULT '0.00' NOT NULL,PRIMARY KEY(article, dealer));INSERT INTO shop VALUES(1,'A',3.45),(1,'B',3.99),(2,'A',10.99),(3,'B',1.45),(3,'C',1.69),(3,'D',1.25),(4,'D',19.95);
+Query OK, 0 rows affected (0,012 sec)
+
+Query OK, 7 rows affected (0,002 sec)
+Records: 7  Duplicates: 0  Warnings: 0
