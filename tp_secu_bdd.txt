@@ -147,7 +147,7 @@ Indice pour le premier cas : il s'agit de trouver un algorithme préservant la r
 
 Donnez l'implémentation en python du middleware et d'une application cliente de cette base illustrant le chiffrement, la récupération, et le déchiffrement des informations de la base.
 Votre projet doit présenter entre autre deux scripts client.py et server.py
-
+pip install phe pyope mysql-connector-python
 Le script server.py affiche à son lancement l'ip et le port par lesquels on peut le joindre. Il communique avec le SGBD et est considéré comme faisant partie du périmètre accessible par l'attaquant.
 Il permet d'exécuter :
 - la comparaison de deux employés sur leur salaire chiffré
