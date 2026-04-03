@@ -196,3 +196,154 @@ Query OK, 0 rows affected (0,012 sec)
 
 Query OK, 7 rows affected (0,002 sec)
 Records: 7  Duplicates: 0  Warnings: 0
+
+14 / select article from shop;
++---------+
+| article |
++---------+
+|    0001 |
+|    0001 |
+|    0002 |
+|    0003 |
+|    0003 |
+|    0003 |
+|    0004 |
++---------+
+7 rows in set (0,008 sec)
+
+select arTIcle from SHoP;
+ERROR 1146 (42S02): Table 'TP_SecuBDD_Tayllamin_Justine.SHoP' doesn't exist
+
+15 / grant SELECT on TP_SecuBDD_Tayllamin_Justine.shop to 'customer'@'localhost';
+Query OK, 0 rows affected (0,004 sec)
+
+show grants for customer@localhost;
++---------------------------------------------------------------------------------+
+| Grants for customer@localhost                                                   |
++---------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `customer`@`localhost`                                    |
+| GRANT SELECT ON `TP_SecuBDD_Tayllamin_Justine`.`shop` TO `customer`@`localhost` |
++---------------------------------------------------------------------------------+
+2 rows in set (0,001 sec)
+
+insert into shop values (5,'D',15);
+ERROR 1142 (42000): INSERT command denied to user 'customer'@'localhost' for table `TP_SecuBDD_Tayllamin_Justine`.`shop`
+
+
+16 / SELECT MAX(article) AS article FROM shop;SELECT article, dealer, price FROM shop WHERE price=(SELECT MAX(price) FROM shop);SELECT article, MAX(price) AS price FROM shop GROUP BY article;SELECT article, dealer, price FROM shop s1 WHERE price=(SELECT MAX(s2.price) FROM shop s2 WHERE s1.article = s2.article);
++---------+
+| article |
++---------+
+|       4 |
++---------+
+1 row in set (0,001 sec)
+
++---------+--------+-------+
+| article | dealer | price |
++---------+--------+-------+
+|    0004 | D      | 19.95 |
++---------+--------+-------+
+1 row in set (0,001 sec)
+
++---------+-------+
+| article | price |
++---------+-------+
+|    0001 |  3.99 |
+|    0002 | 10.99 |
+|    0003 |  1.69 |
+|    0004 | 19.95 |
++---------+-------+
+4 rows in set (0,000 sec)
+
++---------+--------+-------+
+| article | dealer | price |
++---------+--------+-------+
+|    0001 | B      |  3.99 |
+|    0002 | A      | 10.99 |
+|    0003 | C      |  1.69 |
+|    0004 | D      | 19.95 |
++---------+--------+-------+
+4 rows in set (0,001 sec)
+
+17 / CREATE TABLE persons (
+ id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+ name CHAR(60) NOT NULL,
+ PRIMARY KEY (id)
+ );
+Query OK, 0 rows affected (0,019 sec)
+
+CREATE TABLE shirts (
+ id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+ style ENUM('t-shirt', 'polo', 'dress') NOT NULL,
+ color ENUM('red', 'blue', 'orange', 'white', 'black') NOT NULL,
+ owner SMALLINT UNSIGNED NOT NULL REFERENCES persons(id),
+ PRIMARY KEY (id)
+);
+Query OK, 0 rows affected (0,015 sec)
+
+INSERT INTO persons VALUES (NULL, 'Antonio Paz');
+Query OK, 1 row affected (0,003 sec)
+
+INSERT INTO shirts VALUES
+ (NULL, 'polo', 'blue', LAST_INSERT_ID()),
+ (NULL, 'dress', 'white', LAST_INSERT_ID()),
+ (NULL, 't-shirt', 'blue', LAST_INSERT_ID());
+
+Query OK, 3 rows affected (0,002 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+
+INSERT INTO persons VALUES (NULL, 'Lilliana Angelovska');
+INSERT INTO persons VALUES (NULL, 'Laurent Marot');
+
+Query OK, 1 row affected (0,002 sec)
+
+Query OK, 1 row affected (0,002 sec)
+
+INSERT INTO shirts VALUES
+ (NULL, 'dress', 'orange', LAST_INSERT_ID()),
+ (NULL, 'polo', 'red', LAST_INSERT_ID()),
+ (NULL, 'dress', 'blue', LAST_INSERT_ID()),
+ (NULL, 't-shirt', 'white', LAST_INSERT_ID());
+
+Query OK, 4 rows affected (0,003 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+SELECT s.* FROM persons p, shirts s
+WHERE p.name LIKE 'Laurent%'
+AND s.owner = p.id
+AND s.color <> 'white';
+
++----+-------+--------+-------+
+| id | style | color  | owner |
++----+-------+--------+-------+
+|  7 | dress | orange |     6 |
+|  8 | polo  | red    |     6 |
+|  9 | dress | blue   |     6 |
++----+-------+--------+-------+
+3 rows in set (0,001 sec)
+
+
+
+CREATE TABLE animaux (nom VARCHAR(20), proprietaire VARCHAR(20), espece VARCHAR(20), genre CHAR(1), naissance DATE, mort DATE);
+
+Query OK, 0 rows affected (0,010 sec)
+
+18 / python3 question18.py                                                 
+9 lignes insérées avec succès.
+
+SELECT * FROM animaux;
++----------+--------------+---------+-------+------------+------------+
+| nom      | proprietaire | espece  | genre | naissance  | mort       |
++----------+--------------+---------+-------+------------+------------+
+| Fluffy   | Harold       | chat    | f     | 2013-02-04 | NULL       |
+| Claws    | Gwen         | chat    | m     | 2014-03-17 | NULL       |
+| Buffy    | Harod        | chien   | f     | 2019-05-13 | NULL       |
+| Fang     | Benny        | chien   | m     | 2010-08-27 | NULL       |
+| Bowser   | Diane        | chien   | m     | 2018-08-31 | 2021-07-29 |
+| Chirpy   | Gwen         | oiseau  | f     | 2018-09-11 | NULL       |
+| Whistler | Gwen         | oiseau  | NULL  | 2017-12-09 | NULL       |
+| Slim     | Benny        | serpent | m     | 2016-04-29 | NULL       |
+| Puffball | Diane        | hamster | f     | 2019-03-30 | NULL       |
++----------+--------------+---------+-------+------------+------------+
+9 rows in set (0,001 sec)
