@@ -1,21 +1,32 @@
 import mysql.connector
 
-data = [
-    ('Fluffy',   'Harold', 'chat',    'f', '2013-02-04', None),
-    ('Claws',    'Gwen',   'chat',    'm', '2014-03-17', None),
-    ('Buffy',    'Harod',  'chien',   'f', '2019-05-13', None),
-    ('Fang',     'Benny',  'chien',   'm', '2010-08-27', None),
-    ('Bowser',   'Diane',  'chien',   'm', '2018-08-31', '2021-07-29'),
-    ('Chirpy',   'Gwen',   'oiseau',  'f', '2018-09-11', None),
-    ('Whistler', 'Gwen',   'oiseau',  None,'2017-12-09', None),
-    ('Slim',     'Benny',  'serpent', 'm', '2016-04-29', None),
-    ('Puffball', 'Diane',  'hamster', 'f', '2019-03-30', None),
-]
+print("Collez le listing ci-dessous, puis appuyez sur Entrée + Ctrl+D :")
+listing = []
+try:
+    while True:
+        line = input()
+        listing.append(line)
+except EOFError:
+    pass
+
+def parse_value(v):
+    v = v.strip()
+    if v == r'\N':
+        return None
+    return v.strip("'")
+
+data = []
+for line in listing:
+    if not line.strip():
+        continue
+    fields = line.split('\t')
+    row = tuple(parse_value(f) for f in fields)
+    data.append(row)
 
 conn = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='ensibs',
+    host='localhost',                       # A adapter btw
+    user='root',                            # A adapter btw
+    password='ensibs',                      # A adapter btw
     database='TP_SecuBDD_Tayllamin_Justine'
 )
 
