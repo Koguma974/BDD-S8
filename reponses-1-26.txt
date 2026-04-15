@@ -347,3 +347,91 @@ SELECT * FROM animaux;
 | Puffball | Diane        | hamster | f     | 2019-03-30 | NULL       |
 +----------+--------------+---------+-------+------------+------------+
 9 rows in set (0,001 sec)
+
+19 / SELECT nom, TIMESTAMPDIFF(YEAR, naissance, IFNULL(mort, NOW())) AS age FROM animaux;
+
++----------+------+
+| nom      | age  |
++----------+------+
+| Fluffy   |   13 |
+| Claws    |   12 |
+| Buffy    |    6 |
+| Fang     |   15 |
+| Bowser   |    2 |
+| Chirpy   |    7 |
+| Whistler |    8 |
+| Slim     |    9 |
+| Puffball |    7 |
++----------+------+
+9 rows in set (0,001 sec)
+
+20 / SELECT 1 IS NULL, 1 IS NOT NULL;
+
++-----------+---------------+
+| 1 IS NULL | 1 IS NOT NULL |
++-----------+---------------+
+|         0 |             1 |
++-----------+---------------+
+1 row in set (0,001 sec)
+
+1 n'est pas null, et le tableau affiche les valeurs de vérité des prémices données dans la requête
+
+21 / MariaDB [TP_SecuBDD_Tayllamin_Justine]> SELECT nom FROM animaux WHERE nom REGEXP '[bp]';
++----------+
+| nom      |
++----------+
+| Buffy    |
+| Bowser   |
+| Chirpy   |
+| Puffball |
+| Buffy    |
+| Bowser   |
+| Chirpy   |
+| Puffball |
++----------+
+8 rows in set (0,001 sec)22 / Modifiez le mot de passe de votre utilisateur créé au début avec la valeur "mysql"
+
+
+22 / ALTER USER 'customer'@'localhost' IDENTIFIED BY 'linge';
+Query OK, 0 rows affected (0,004 sec)
+
+FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0,001 sec)
+
+23 / SELECT SHA2(CONCAT_WS(',', nom, proprietaire, espece, genre, naissance, mort), 256) AS hash FROM animaux;
++------------------------------------------------------------------+
+| hash                                                             |
++------------------------------------------------------------------+
+| 933f91039b60c1cb54c483fea00490fc64f2fadab6520c438f4c532822828e47 |
+| 12f7f217a5404de660369c75e1701005003a3c3c73088bd3ee1f764884f2ec7e |
+| fe9536e7aadeae8cab3eaa0084245ce3a816cfad9cf9c99897a31db12a6c7ed5 |
+| 7fcdae29a4d55e4a211b52db9febaacaf2a80b523dc210a2b191538d37064068 |
+| f1bd7436ebed1f0a7d01c39373c15ae4ceb482f82674d33fe284b3d48b7dc8e1 |
+| 4b1805ea39a070c6a53d82b32d1c2626fd5ab2f83d9a5029b0f9b41ec451b00f |
+| 972bb8f86e0c5e25b77658100ced43581689d0f966dec34961c98026a12e5032 |
+| 40b7281ffabb45bcf194345fb0ce231a346eb3314a1a1f1cfb378f078bf8223a |
+| cbd87e15be53f52a5667a28b96f96f5218f73e01f871f89b3ec7f04b7282b182 |
+| 933f91039b60c1cb54c483fea00490fc64f2fadab6520c438f4c532822828e47 |
+| 12f7f217a5404de660369c75e1701005003a3c3c73088bd3ee1f764884f2ec7e |
+| fe9536e7aadeae8cab3eaa0084245ce3a816cfad9cf9c99897a31db12a6c7ed5 |
+| 7fcdae29a4d55e4a211b52db9febaacaf2a80b523dc210a2b191538d37064068 |
+| f1bd7436ebed1f0a7d01c39373c15ae4ceb482f82674d33fe284b3d48b7dc8e1 |
+| 4b1805ea39a070c6a53d82b32d1c2626fd5ab2f83d9a5029b0f9b41ec451b00f |
+| 972bb8f86e0c5e25b77658100ced43581689d0f966dec34961c98026a12e5032 |
+| 40b7281ffabb45bcf194345fb0ce231a346eb3314a1a1f1cfb378f078bf8223a |
+| cbd87e15be53f52a5667a28b96f96f5218f73e01f871f89b3ec7f04b7282b182 |
++------------------------------------------------------------------+
+18 rows in set (0,001 sec)
+
+24 / Le script mysql_secure_installation permet de sécuriser une installation fraîche d'un serveur de bdd en 
+définissant un mot de passe root, supprimant les utilisateur anonymes crées par défaut ainsi que la bdd test
+accessible par défaut à tous les utilisateurs. Il recharge à la fin les privileges.
+
+25 / Afin de sécuriser une cellule sensible, nous pouvons l'encrypter avec un chiffrement deja mis intégré : AES 
+
+INSERT INTO persons (nom) VALUES (AES_ENCRYPT('valeur_sensible', 'clé_secrète'));
+SELECT AES_DECRYPT(nom, 'clé_secrète') FROM persons;
+
+Ceci permet d'encrypter des données facilement. 
+
+26 / mysqldump -u root -p TP_SecuBDD_Tayllamin_Justine > dump.sql
